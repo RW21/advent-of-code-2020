@@ -11,8 +11,6 @@
                 #:when (char=? j #\#))
        i))))
 
-
-
 (define (part-a right down l)
   (let loop ([l (cdr l)]
              [pos 0]
