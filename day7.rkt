@@ -10,7 +10,7 @@
              (for/set ([inside (string-split insides ",")])
                inside)))
 
-(for ([l (file->lines "test.txt")])
+(for ([l (file->lines "input7.txt")])
   (parse-rule l))
 
 
@@ -39,10 +39,29 @@
          
 (part-a)
 
+(define (build-bag-string b)
+  (string-append
+   (third b) " " (fourth b)))
 
+(for ([a (hash-ref ht "shiny gold")])
+  (display (build-bag-string (parse-bag a))))
+
+ 
 (define (part-b)
-  (inside-count (hash-ref ht "shiny gold")))
+  (define (search bag-name)
+    (for/sum ([bag (hash-ref ht bag-name)])
+      (cond
+        [(string=? bag "no other bags") 0]
+        [else
+         (let ([n (string->number (second (parse-bag bag)))]
+               [bag-string (build-bag-string (parse-bag bag))])
+           (+ n
+              (* n (search bag-string))))])))
+
+  (search "shiny gold"))
 
 (part-b)
-    
-      
+
+          
+                    
+  
