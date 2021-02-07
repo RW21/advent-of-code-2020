@@ -2,6 +2,7 @@
 
 (define input
   (for/vector ([line (file->lines "input9.txt")])
+;  (for/vector ([line (file->lines "test.txt")])
     (string->number line)))
 
 (define (part-a)
@@ -19,9 +20,25 @@
               #:unless (verify n i))
     n))
     
-    
-(part-a)
+(define invalid-num (part-a))
+(println invalid-num)
+(define input-length (vector-length input))
+
+(define (valid-set start)
+  (let loop ([size 0]
+             [sum 0])
+    (cond
+      [(>= (+ start size) input-length) #f]
+      [(= (+ sum (vector-ref input (+ start size))) invalid-num) size]
+      [else (loop (add1 size) (+ sum (vector-ref input (+ start size))))]
+      )))
 
 (define (part-b)
-  (let ([target (part-a)])
-    (for ([n (vector-length input)])
+  (for/first ([i (in-range input-length)]
+              #:when (valid-set i))
+    (let ([result-range (vector-sort (vector-copy input i (+ i (valid-set i))) <)])
+      (+ (vector-ref result-range 0) (vector-ref result-range (sub1 (vector-length result-range))))
+      )))
+
+(part-b)
+

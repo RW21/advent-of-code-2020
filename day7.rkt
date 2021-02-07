@@ -42,10 +42,6 @@
 (define (build-bag-string b)
   (string-append
    (third b) " " (fourth b)))
-
-(for ([a (hash-ref ht "shiny gold")])
-  (display (build-bag-string (parse-bag a))))
-
  
 (define (part-b)
   (define (search bag-name)
